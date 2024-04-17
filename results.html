@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Resultados do Processamento</title>
+    <style>
+        body {
+            background-color: #f8f9fa; /* Cor de fundo suave */
+        }
+        .container {
+            padding: 2rem 0;
+        }
+        .table-container {
+            margin: 0 auto;
+            overflow-x: auto;
+        }
+        .table {
+            width: 100%;
+            margin-top: 1rem;
+        }
+        .footer {
+            text-align: center;
+            padding: 1rem 0;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: #666;
+            background-color: #fff;
+        }
+		
+	.table {
+        width: 100%;
+        margin-top: 1rem;
+        border-collapse: separate; /* Permite que os cantos arredondados sejam aplicados corretamente */
+    }
+    .table-container {
+        border-radius: .5rem; /* Raio de borda para arredondamento */
+        overflow: hidden; /* Isso garante que o arredondamento se aplique aos filhos também */
+    }
+    .table thead tr:first-child th:first-child {
+        border-top-left-radius: .5rem; /* Arredondar o canto superior esquerdo do thead */
+    }
+    .table thead tr:first-child th:last-child {
+        border-top-right-radius: .5rem; /* Arredondar o canto superior direito do thead */
+    }
+    .table-striped > tbody > tr:nth-of-type(odd) {
+        background-color: rgba(0,0,0,.05);
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-container">
+            <!-- Botão para voltar -->
+            <button onclick="window.history.back()" class="btn btn-secondary btn-back">Voltar</button>
+            <h1 class="mb-3 text-center flex-grow-1">Resultados do Processamento</h1>
+        </div>
+        <div class="table-container shadow rounded">
+            <table class="table table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Ticket</th>
+                        <th>Nf</th>
+                        <th>Fornecedor</th>
+                        <th>Comprador</th>
+                        <th>Classificação</th>
+                        <th>Inconsistências</th>
+                        <th>Divergências</th>
+                        <th>Qtd inconsistências</th>
+                    </tr>
+                </thead>
+                <tbody id="resultsBody"></tbody>
+            </table>
+        </div>
+    </div>
+    <div class="footer">
+        © 2024 Company, Inc. Todos os direitos reservados.
+    </div>
+
+    <script>
+        window.onload = function() {
+            const storedResults = localStorage.getItem('apiResults');
+            const results = storedResults ? JSON.parse(storedResults) : {};
+            const parsedResults = results.joke ? JSON.parse(results.joke) : [];
+
+            if (Array.isArray(parsedResults)) {
+                const resultsBody = document.getElementById('resultsBody');
+                parsedResults.forEach(result => {
+                    const row = `<tr>
+                        <td>${result.Ticket}</td>
+                        <td>${result.NF}</td>
+                        <td>${result.Fornecedor}</td>
+                        <td>${result.Comprador}</td>
+                        <td>${result.Classificacao}</td>
+                        <td>${result.Inconsistencias}</td>
+                        <td>${result.Divergencias}</td>
+                        <td>${result.QtdInconsistencias}</td>
+                    </tr>`;
+                    resultsBody.innerHTML += row;
+                });
+            } else {
+                console.error('Os dados recuperados não são uma array:', parsedResults);
+            }
+        }
+    </script>
+</body>
+</html>
